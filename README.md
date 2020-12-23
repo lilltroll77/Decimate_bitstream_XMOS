@@ -8,4 +8,5 @@ If the thread was to late to fetch portdata, an exeption is raised.
 This example runs on the XMOS XCORE-200 explorer kit.
 Connect port 1N with port 1M with a jumper on tile 0.
 
-The latency between when the last bit on the port is read until the FIR filtreation is ready is only 3 instruction cycles. On the 4:th cycle the result is sent on a streaming channel.
+The latency between when the last bit on the port is read until the FIR calculation has finished is only 3 instruction cycles. 
+On the 4:th cycle the result is sent on a streaming channel.
