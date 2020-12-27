@@ -11,7 +11,7 @@
 #include "calcLUT.h"
 #include "defines.h"
 
-void decimate64asm(streaming chanend c,in buffered port:32 p,int* h_ptr ,int bitpattern[2*FIFO_INT]);
+void decimate64asm(streaming chanend c , in buffered port:32 p , int* h_ptr , int bitpattern[2*FIFO_INT]);
 
 #pragma unsafe arrays
 void decimate64(streaming chanend c , in buffered port:32 p){

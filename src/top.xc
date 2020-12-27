@@ -27,7 +27,7 @@ unsigned burden(unsigned val){
 
 
 //in buffered port:32 p = XS1_PORT_1A;
-#define LEN 20
+#define LEN 80
 
 
 void reference(streaming chanend c){
@@ -66,7 +66,7 @@ void test(streaming chanend c_fast  , out buffered port:32 p, clock clk){
         {
             int k=0;
             for(int i=0; i<LEN ;){
-                //crc32(crc , i , POLY);
+                crc32(crc , i , POLY);
                 data[i++] = crc;
                 int r=crc;
                 for(int j=0; j<32 ; j++){
@@ -74,7 +74,7 @@ void test(streaming chanend c_fast  , out buffered port:32 p, clock clk){
                     r >>=1;
                 }
                 //crc=0;
-                //crc32(crc , i , POLY);
+                crc32(crc , i , POLY);
                 data[i++]=crc;
                 r=crc;
                 for(int j=0; j<32 ; j++){
@@ -93,7 +93,7 @@ void test(streaming chanend c_fast  , out buffered port:32 p, clock clk){
     p <: data[i++];
     par{
         //Worst case : All other 7 thread runs in core_fast_mode_on
-        par(int i=0; i<5 ; i++)
+        par(int i=0; i<0 ; i++)
                 burden(i); //Allocate
         {
             {
