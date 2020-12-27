@@ -11,6 +11,6 @@
 
 #include "defines.h"
 
-void calcLUT(int h[BLOCKS][SIZE]);
+int calcLUT(int h[BLOCKS][SIZE]);
 
 #endif /* CALCLUT_H_ */

@@ -27,7 +27,7 @@ unsigned burden(unsigned val){
 
 
 //in buffered port:32 p = XS1_PORT_1A;
-#define LEN 80
+#define LEN 256
 
 
 void reference(streaming chanend c){
@@ -41,14 +41,11 @@ void reference(streaming chanend c){
         int acc=0;
         for(int i=0; i<FIRLEN ; i++)
             acc +=mem[i] * hFIR[i];
-        c <: acc;
+        c <: acc;//>>FIR_scale; //round after summation
     }
 }
 
 #define LIMIT BLOCKS/8
-
-
-
 
 
 
@@ -61,6 +58,7 @@ void test(streaming chanend c_fast  , out buffered port:32 p, clock clk){
     unsigned fast[LEN/2];
     unsigned crc=1;
     streaming chan c_ref;
+#ifndef SIMULATE
     par{
         reference(c_ref);
         {
@@ -88,6 +86,7 @@ void test(streaming chanend c_fast  , out buffered port:32 p, clock clk){
         }
 
     }// end par
+#endif
     {
     int i=0;
     p <: data[i++];

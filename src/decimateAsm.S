@@ -40,6 +40,7 @@
 #define ACCUMULATE add ACC , ACC , r11
 
 #define CALC 	{READ_BUFFER;UPDATE_READ};{READ_LUT;nop };{ACCUMULATE;UPDATE_LUT}
+#define CALC2 CALC;CALC
 #define CALC3 CALC;CALC;CALC
 #define CALC4 CALC;CALC;CALC;CALC
 
@@ -91,78 +92,112 @@ LOOP:
 
 .align 4
 CALC_LUT:
-	#if (BLOCKS>4)
-		CALC4;
-	#endif
-	#if (BLOCKS>8)
-		CALC4;
-	#endif
-	#if (BLOCKS>12)
-		CALC4;
-	#endif
-	#if (BLOCKS>16)
-		CALC4;
-	#endif
-	#if (BLOCKS>20)
-		CALC4;
-	#endif
-	#if (BLOCKS>24)
-		CALC4;
-	#endif
-	#if (BLOCKS>28)
-		CALC4;
-	#endif
+calc0_4:
+		CALC4
+calc4_8:
+		CALC4
+calc8_12:
+		CALC4
+calc12_16:
+		CALC4
+
 	#if (BLOCKS>32)
-		CALC4;
+calc16_20:
+		CALC4
 	#endif
+
+
 	#if (BLOCKS>36)
-		CALC4;
+calc20_24:
+		CALC4
 	#endif
+
 	#if (BLOCKS>40)
-		CALC4;
+calc24_28:
+		CALC4
 	#endif
+
 	#if (BLOCKS>44)
-		CALC4;
+calc28_32:
+		CALC4
 	#endif
+
 	#if (BLOCKS>48)
-		CALC4;
+calc32_36:
+		CALC4
 	#endif
+
 	#if (BLOCKS>52)
-		CALC4;
+calc36_40:
+		CALC4
 	#endif
+
 	#if (BLOCKS>56)
-		CALC4;
+calc40_44:
+		CALC4
 	#endif
+
 	#if (BLOCKS>60)
-		CALC4;
+calc44_48:
+		CALC4
 	#endif
+
 	#if (BLOCKS>64)
-		CALC4;
+calc48_52:
+		CALC4
 	#endif
+
 	#if (BLOCKS>68)
-		CALC4;
+calc52_56:
+		CALC4
 	#endif
+
 	#if (BLOCKS>72)
-		CALC4;
+calc56_60:
+		CALC4
 	#endif
+
 	#if (BLOCKS>76)
-		CALC4;
+calc60_64:
+		CALC4
 	#endif
+
 	#if (BLOCKS>80)
-		CALC4;
+
+calc64_68:
+		CALC4
 	#endif
+
 	#if (BLOCKS>84)
-		CALC4;
+calc68_72:
+		CALC4
 	#endif
+
 	#if (BLOCKS>88)
-		CALC4;
+calc72_76:
+		CALC4
 	#endif
-	#if (BLOCKS>92)
-		CALC4;
-	#endif
-	#if (BLOCKS>96)
-		CALC4;
-	#endif
+
+#if (BLOCKS>92)
+calc76_80:
+		CALC4
+#endif
+
+#if (BLOCKS>96)
+calc80_84:
+		CALC4
+#endif
+#if (BLOCKS>100)
+
+calc84_88:
+		CALC4
+#endif
+
+#if (BLOCKS>104)
+calc88_92:
+		CALC4
+#endif
+	CALC3
 
 PORT_IN_24:
 	clrsr  	XS1_SR_IEBLE_MASK //disable interupts in thread and wait for port
@@ -187,18 +222,23 @@ PORT_IN_24:
 	 ecallf TIME //Safest to disable the gatedriver if thread was starved out of time
 	 ldc TIME , 0 // restore ZERO
 	}
-CALC_3:
-	CALC3
+CALC_LUT_PART2:
+	//PLACE AS MANY CALC AS POSSIBLE HERE: 12 for 100MHz CPU @ 500/26 MHz port clock
+	//PLACE AS MANY CALC AS POSSIBLE HERE: 11 for 100MHz CPU @ 500/24 MHz port clock
+	CALC4
+	CALC4
+	CALC4
 
 PORT_IN_8:
 	inpw PORTVAL, res[PORT], 8
 	shr  r7, PORTVAL, 24
 
-CALC_1:
+CALC_LAST_BYTE:
 	ldw  r7, LUT_PTR[r7]
 	add  ACC , ACC , r7
 
 CHANNEL_OUT:
+	//shr ACC , ACC , FIR_scale
  	out res[C], ACC
 
 UPDATE_BUFFER:
@@ -212,7 +252,6 @@ UPDATE_BUFFER:
 
 
 readPort:
-//Do not use r11 during interupt!
 		in INTERUPT_REG, res[PORT]
 		{
 		 edu  	res[PORT] //Disable event uncond.
