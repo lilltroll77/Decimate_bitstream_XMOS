@@ -1,4 +1,4 @@
-# 64x decimation of a 1 bit stream for XMOS XCORE-200
+# 64x decimation of a 20 MHz bit-stream for XMOS XCORE-200
 Efficient asm optimized 64x decimation of a 1 bit stream for XMOS XCORE-200.
 Intended for use with 20 MHz 1-bit Sigma-Delta ADC.
 
