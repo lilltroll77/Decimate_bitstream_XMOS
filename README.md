@@ -2,7 +2,7 @@
 Efficient asm optimized 64x decimation of a 1 bit stream for XMOS XCORE-200.
 Intended for use with 20 MHz 1-bit Sigma-Delta ADC.
 
-512 taps FIR filter can run on a 71 MHz thread with a 19.2 MHz bitstream or a 704 taps FIR filter on a 100 MHz thread.
+512 taps FIR filter can run on a 71 MHz thread with a 19.2 MHz bitstream or a 768 taps FIR filter on a 100 MHz thread.
 If the thread was to late to fetch portdata, an exeption is raised.
 
 This example runs on the XMOS XCORE-200 explorer kit.
